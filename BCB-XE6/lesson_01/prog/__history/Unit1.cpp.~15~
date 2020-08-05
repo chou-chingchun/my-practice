@@ -1,0 +1,242 @@
+//---------------------------------------------------------------------------
+
+#include <vcl.h>
+#pragma hdrstop
+
+#include "Unit1.h"
+//---------------------------------------------------------------------------
+
+#define	kMEMO_LINE_LIMIT	100
+
+//---------------------------------------------------------------------------
+
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+TForm1 *Form1;
+//---------------------------------------------------------------------------
+
+__fastcall TForm1::TForm1(TComponent* Owner)
+	: TForm(Owner)
+{
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::fnMemo(AnsiString as)
+{
+		Memo1->Lines->Append(as);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::FormCreate(TObject *Sender)
+{
+	Memo1->Clear();
+
+	ADOConn1->ConnectionTimeout	= 5;
+	ADOConn1->CommandTimeout	= 3;
+	ADOConn1->LoginPrompt		= false;
+	ADOConn1->KeepConnection	= false;
+
+	ADOQuery1->Connection		= ADOConn1;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::Memo1Change(TObject *Sender)
+{
+	while (Memo1->Lines->Count > kMEMO_LINE_LIMIT)
+		Memo1->Lines->Delete(0);
+
+	SendMessage(Memo1->Handle, WM_VSCROLL, SB_BOTTOM, 0);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::Button2Click(TObject *Sender)
+{
+// 新增
+	// Connect
+	UnicodeString usPswd		= L"1234";		// L"1qaz@WSX"
+	UnicodeString usUser		= L"sa";
+	UnicodeString usDbName		= L"books";
+	UnicodeString usDbSource	= L"LOCALHOST\\SQLEXPRESS";
+
+	UnicodeString us;
+	us.sprintf( L"Provider=SQLOLEDB.1;"
+				L"Password=%s;"
+				L"Persist Security Info=True;"
+				L"User ID=%s;"
+				L"Initial Catalog=%s;"
+				L"Data Source=%s"
+				,usPswd.w_str()
+				,usUser.w_str()
+				,usDbName.w_str()
+				,usDbSource.w_str() );
+	ADOConn1->ConnectionString = us;
+	try
+	{
+		ADOConn1->Connected = true;
+	}
+	catch (Exception &exception)
+	{
+		TDateTime dt = Now();
+		AnsiString asNow = dt.FormatString(L"yyyy-mm-dd hh:nn:ss");
+		fnMemo(asNow + "\tConnect DB Fail [" + exception.Message + "]");
+		return;
+	}
+
+	// Insert
+	UnicodeString usTitle = Edit1->Text;
+	int iQty = Edit2->Text.ToInt();
+	UnicodeString usTimeStamp = Edit3->Text;
+	UnicodeString usSql;
+	usSql.sprintf( L"INSERT INTO [dbo].[stock] ([title],[quantity],[time_stamp])"
+				   L" VALUES ('%s',%d,CAST('%s' AS DATETIME))"
+				  ,usTitle.w_str()
+				  ,iQty
+				  ,usTimeStamp.w_str() );
+	ADOQuery1->SQL->Clear();
+	ADOQuery1->SQL->Add( usSql );
+	try
+	{
+		ADOQuery1->ExecSQL();
+	}
+	catch (Exception &exception)
+	{
+		TDateTime dt = Now();
+		AnsiString asNow = dt.FormatString(L"yyyy-mm-dd hh:nn:ss");
+		fnMemo(asNow + "\tInsert Data to DB Fail [" + exception.Message + "]");
+	}
+
+	// Disconnect
+	ADOConn1->Connected = false;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::Button4Click(TObject *Sender)
+{
+// 刪除
+	// Connect
+	UnicodeString usPswd		= L"1234";		// L"1qaz@WSX"
+	UnicodeString usUser		= L"sa";
+	UnicodeString usDbName		= L"books";
+	UnicodeString usDbSource	= L"LOCALHOST\\SQLEXPRESS";
+
+	UnicodeString us;
+	us.sprintf( L"Provider=SQLOLEDB.1;"
+				L"Password=%s;"
+				L"Persist Security Info=True;"
+				L"User ID=%s;"
+				L"Initial Catalog=%s;"
+				L"Data Source=%s"
+				,usPswd.w_str()
+				,usUser.w_str()
+				,usDbName.w_str()
+				,usDbSource.w_str() );
+	ADOConn1->ConnectionString = us;
+	try
+	{
+		ADOConn1->Connected = true;
+	}
+	catch (Exception &exception)
+	{
+		TDateTime dt = Now();
+		AnsiString asNow = dt.FormatString(L"yyyy-mm-dd hh:nn:ss");
+		fnMemo(asNow + "\tConnect DB Fail [" + exception.Message + "]");
+		return;
+	}
+
+	// Delete
+	UnicodeString usTitle = Edit6->Text;
+	UnicodeString usSql;
+	if (CheckBox1->Checked == true)
+	{
+		usSql = L"DELETE FROM [dbo].[stock]";
+	}
+	else
+	{
+		usSql.sprintf( L"DELETE FROM [dbo].[stock]"
+					   L" WHERE [title]='%s'"
+					  ,usTitle.w_str() );
+	}
+	ADOQuery1->SQL->Clear();
+	ADOQuery1->SQL->Add( usSql );
+	try
+	{
+		ADOQuery1->ExecSQL();
+	}
+	catch (Exception &exception)
+	{
+		TDateTime dt = Now();
+		AnsiString asNow = dt.FormatString(L"yyyy-mm-dd hh:nn:ss");
+		fnMemo(asNow + "\tDelete Data from DB Fail [" + exception.Message + "]");
+	}
+
+	// Disconnect
+	ADOConn1->Connected = false;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::Button6Click(TObject *Sender)
+{
+// 修改
+	// Connect
+	UnicodeString usPswd		= L"1234";		// L"1qaz@WSX"
+	UnicodeString usUser		= L"sa";
+	UnicodeString usDbName		= L"books";
+	UnicodeString usDbSource	= L"LOCALHOST\\SQLEXPRESS";
+
+	UnicodeString us;
+	us.sprintf( L"Provider=SQLOLEDB.1;"
+				L"Password=%s;"
+				L"Persist Security Info=True;"
+				L"User ID=%s;"
+				L"Initial Catalog=%s;"
+				L"Data Source=%s"
+				,usPswd.w_str()
+				,usUser.w_str()
+				,usDbName.w_str()
+				,usDbSource.w_str() );
+	ADOConn1->ConnectionString = us;
+	try
+	{
+		ADOConn1->Connected = true;
+	}
+	catch (Exception &exception)
+	{
+		TDateTime dt = Now();
+		AnsiString asNow = dt.FormatString(L"yyyy-mm-dd hh:nn:ss");
+		fnMemo(asNow + "\tConnect DB Fail [" + exception.Message + "]");
+		return;
+	}
+
+	// Update
+	UnicodeString usOldTitle = Edit7->Text;
+	UnicodeString usNewTitle = Edit5->Text;
+	int iQty = Edit8->Text.ToInt();
+//	UnicodeString usTimeStamp = Edit4->Text;
+	UnicodeString usSql;
+	usSql.sprintf( L"UPDATE [dbo].[stock]"
+				   L" SET [title]='%s'"
+				   L",[quantity]=%d"
+//				   L",[time_stamp]=CAST('%s' AS DATETIME)"
+				   L" WHERE [title]='%s'"
+				  ,usNewTitle.w_str()
+				  ,iQty
+//				  ,usTimeStamp.w_str()
+				  ,usOldTitle.w_str() );
+	ADOQuery1->SQL->Clear();
+	ADOQuery1->SQL->Add( usSql );
+	try
+	{
+		ADOQuery1->ExecSQL();
+	}
+	catch (Exception &exception)
+	{
+		TDateTime dt = Now();
+		AnsiString asNow = dt.FormatString(L"yyyy-mm-dd hh:nn:ss");
+		fnMemo(asNow + "\tUpdate Data to DB Fail [" + exception.Message + "]");
+	}
+
+	// Disconnect
+	ADOConn1->Connected = false;
+}
+//---------------------------------------------------------------------------
+

@@ -1,0 +1,241 @@
+object Form1: TForm1
+  Left = 0
+  Top = 0
+  Caption = 'Lesson 01'
+  ClientHeight = 592
+  ClientWidth = 985
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = [fsBold]
+  OldCreateOrder = False
+  OnCreate = FormCreate
+  PixelsPerInch = 96
+  TextHeight = 13
+  object GroupBox1: TGroupBox
+    Left = 8
+    Top = 8
+    Width = 969
+    Height = 65
+    Caption = #26032#22686
+    TabOrder = 0
+    object Label1: TLabel
+      Left = 16
+      Top = 32
+      Width = 29
+      Height = 13
+      Caption = #26360#21517':'
+    end
+    object Label2: TLabel
+      Left = 320
+      Top = 32
+      Width = 29
+      Height = 13
+      Caption = #25976#37327':'
+    end
+    object Label3: TLabel
+      Left = 456
+      Top = 32
+      Width = 55
+      Height = 13
+      Caption = #26085#26399#26178#38291':'
+    end
+    object Edit1: TEdit
+      Left = 64
+      Top = 24
+      Width = 209
+      Height = 21
+      Alignment = taCenter
+      TabOrder = 0
+    end
+    object Edit2: TEdit
+      Left = 368
+      Top = 24
+      Width = 49
+      Height = 21
+      Alignment = taCenter
+      TabOrder = 1
+      Text = '1'
+    end
+    object Edit3: TEdit
+      Left = 521
+      Top = 24
+      Width = 144
+      Height = 21
+      Alignment = taCenter
+      TabOrder = 2
+      Text = '2020-01-01 00:00:00'
+    end
+    object Button2: TButton
+      Left = 872
+      Top = 22
+      Width = 75
+      Height = 25
+      Caption = #26032#22686
+      TabOrder = 3
+      OnClick = Button2Click
+    end
+  end
+  object GroupBox2: TGroupBox
+    Left = 8
+    Top = 79
+    Width = 481
+    Height = 66
+    Caption = #21034#38500
+    TabOrder = 1
+    object Label6: TLabel
+      Left = 16
+      Top = 32
+      Width = 29
+      Height = 13
+      Caption = #26360#21517':'
+    end
+    object Edit6: TEdit
+      Left = 64
+      Top = 24
+      Width = 209
+      Height = 21
+      Alignment = taCenter
+      TabOrder = 0
+    end
+    object Button4: TButton
+      Left = 384
+      Top = 24
+      Width = 75
+      Height = 25
+      Caption = #21034#38500
+      TabOrder = 1
+      OnClick = Button4Click
+    end
+    object CheckBox1: TCheckBox
+      Left = 297
+      Top = 24
+      Width = 81
+      Height = 17
+      Caption = #21034#38500#20840#37096
+      TabOrder = 2
+    end
+  end
+  object GroupBox3: TGroupBox
+    Left = 8
+    Top = 151
+    Width = 969
+    Height = 98
+    Caption = #20462#25913
+    TabOrder = 2
+    object Label7: TLabel
+      Left = 16
+      Top = 32
+      Width = 42
+      Height = 13
+      Caption = #21407#26360#21517':'
+    end
+    object Label5: TLabel
+      Left = 16
+      Top = 72
+      Width = 42
+      Height = 13
+      Caption = #26032#26360#21517':'
+    end
+    object Label8: TLabel
+      Left = 320
+      Top = 72
+      Width = 29
+      Height = 13
+      Caption = #25976#37327':'
+    end
+    object Label4: TLabel
+      Left = 456
+      Top = 72
+      Width = 55
+      Height = 13
+      Caption = #26085#26399#26178#38291':'
+      Visible = False
+    end
+    object Edit7: TEdit
+      Left = 64
+      Top = 24
+      Width = 209
+      Height = 21
+      Alignment = taCenter
+      TabOrder = 0
+    end
+    object Button6: TButton
+      Left = 872
+      Top = 64
+      Width = 75
+      Height = 25
+      Caption = #20462#25913
+      TabOrder = 1
+      OnClick = Button6Click
+    end
+    object Edit5: TEdit
+      Left = 64
+      Top = 64
+      Width = 209
+      Height = 21
+      Alignment = taCenter
+      TabOrder = 2
+    end
+    object Edit8: TEdit
+      Left = 368
+      Top = 64
+      Width = 49
+      Height = 21
+      Alignment = taCenter
+      TabOrder = 3
+      Text = '1'
+    end
+    object Edit4: TEdit
+      Left = 521
+      Top = 64
+      Width = 144
+      Height = 21
+      Alignment = taCenter
+      TabOrder = 4
+      Text = '2020-01-03 00:00:00'
+      Visible = False
+    end
+  end
+  object GroupBox4: TGroupBox
+    Left = 495
+    Top = 79
+    Width = 482
+    Height = 66
+    Caption = #26597#35426
+    TabOrder = 3
+    object Button1: TButton
+      Left = 384
+      Top = 24
+      Width = 75
+      Height = 25
+      Caption = #26597#35426
+      TabOrder = 0
+      OnClick = Button1Click
+    end
+  end
+  object test: TMemo
+    Left = 8
+    Top = 255
+    Width = 969
+    Height = 146
+    Lines.Strings = (
+      'Memo1')
+    ReadOnly = True
+    ScrollBars = ssBoth
+    TabOrder = 4
+    OnChange = testChange
+  end
+  object ADOConn1: TADOConnection
+    Provider = 'SQLOLEDB'
+    Left = 760
+    Top = 312
+  end
+  object ADOQuery1: TADOQuery
+    Parameters = <>
+    Left = 864
+    Top = 320
+  end
+end
